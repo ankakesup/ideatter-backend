@@ -17,7 +17,7 @@ DATABASE_URL = os.environ.get('DATABASE_URL')
 if DATABASE_URL:
     # 本番環境 (Render) の場合
     # RenderのPostgreSQL URLは 'postgresql://' で始まるが、SQLAlchemyの古いバージョンとの互換性のため 'postgres://' に置換する
-    app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL.replace("postgresql://", "postgres://", 1)
+    app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 else:
     # ローカル環境の場合
     db_user = os.environ.get('DB_USER', 'postgres')
