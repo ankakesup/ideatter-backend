@@ -9,7 +9,7 @@ from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 
 # CORSの設定
-CORS(app, origins=["http://localhost:5173", "http://localhost:5175"]) # フロントエンドのURLを追加して
+CORS(app, origins=["http://localhost:5173", "https://ideatter.vercel.app/"]) # フロントエンドのURLを追加して
 
 # --- データベースの設定 ---
 # 環境変数からデータベースURLを取得。なければデフォルト値を使用。
