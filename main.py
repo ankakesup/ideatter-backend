@@ -12,18 +12,20 @@ app = Flask(__name__)
 CORS(app, origins=["http://localhost:5173", "https://ideatter.vercel.app/"]) # フロントエンドのURLを追加して
 
 # --- データベースの設定 ---
-# 環境変数からデータベースURLを取得。なければデフォルト値を使用。
-# 例: postgresql://<user>:<password>@<host>:<port>/<dbname>
-db_user = os.environ.get('DB_USER', 'postgres')
-db_password = os.environ.get('DB_PASSWORD', 'kono5013') # ここにパスワードを入力
-db_host = os.environ.get('DB_HOST', 'localhost')
-db_port = os.environ.get('DB_PORT', '5432') # データベースのポート番号を指定
-db_name = os.environ.get('DB_NAME', 'ideatter_demo_db')
+if DATABASE_URL:
+    # 本番環境 (Render) の場合
+    # RenderのPostgreSQL URLは 'postgresql://' で始まるが、SQLAlchemyの古いバージョンとの互換性のため 'postgres://' に置換する
+    app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL.replace("postgresql://", "postgres://", 1)
+else:
+    # ローカル環境の場合
+    db_user = os.environ.get('DB_USER', 'postgres')
+    db_password = os.environ.get('DB_PASSWORD')
+    db_host = os.environ.get('DB_HOST', 'localhost')
+    db_port = os.environ.get('DB_PORT', '5432')
+    db_name = os.environ.get('DB_NAME', 'twitter_clone_db')
+    app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}'
 
-app.config['SQLALCHEMY_DATABASE_URI'] = f'postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-# SQLAlchemyのインスタンスを作成
 db = SQLAlchemy(app)
 
 # --- データベースモデルの定義 (ORM) ---
