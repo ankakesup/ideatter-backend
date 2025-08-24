@@ -11,6 +11,8 @@ app = Flask(__name__)
 # CORSの設定
 CORS(app, origins=["http://localhost:5173", "https://ideatter.vercel.app/"]) # フロントエンドのURLを追加して
 
+DATABASE_URL = os.environ.get('DATABASE_URL')
+
 # --- データベースの設定 ---
 if DATABASE_URL:
     # 本番環境 (Render) の場合
