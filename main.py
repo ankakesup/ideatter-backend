@@ -88,6 +88,11 @@ class WantToCreate(db.Model):
             "ideaId": self.ideaId,
         }
 
+# アプリケーションコンテキスト内でテーブルを作成
+# これにより、アプリ起動時にテーブルが存在しない場合、自動で作成される
+with app.app_context():
+    db.create_all()
+
 # --- APIエンドポイントの定義 ---
 
 @app.route("/")
